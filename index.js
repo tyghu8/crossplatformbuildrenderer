@@ -1,18 +1,20 @@
-function numDistinct(s, t) {
-  const m = s.length;
-  const n = t.length;
-  const dp = Array.from(Array(m + 1), () => Array(n + 1).fill(0));
-  for (let i = 0; i <= m; i++) {
-    dp[i][0] = 1;
-  }
-  for (let i = 1; i <= m; i++) {
-    for (let j = 1; j <= n; j++) {
-      if (s[i - 1] === t[j - 1]) {
-        dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j];
-      } else {
-        dp[i][j] = dp[i - 1][j];
-      }
+function findCircleNum(M) {
+  if (!M || M.length === 0) return 0;
+  const visited = new Array(M.length).fill(false);
+  let count = 0;
+  for (let i = 0; i < M.length; i++) {
+    if (!visited[i]) {
+      dfs(M, i, visited);
+      count++;
     }
   }
-  return dp[m][n];
+  return count;
+}
+function dfs(M, i, visited) {
+  visited[i] = true;
+  for (let j = 0; j < M.length; j++) {
+    if (M[i][j] === 1 && !visited[j]) {
+      dfs(M, j, visited);
+    }
+  }
 }
