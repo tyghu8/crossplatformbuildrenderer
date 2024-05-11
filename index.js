@@ -1,1 +1,11 @@
-const last = (arr) => arr[arr.length - 1];
+function reverseList(head) {
+  let prev = null;
+  let curr = head;
+  while (curr) {
+    const next = curr.next;
+    curr.next = prev;
+    prev = curr;
+    curr = next;
+  }
+  return prev;
+}
