@@ -1,30 +1,18 @@
-function maximalRectangle(matrix) {
-  if (matrix.length === 0 || matrix[0].length === 0) return 0;
-  const rows = matrix.length;
-  const cols = matrix[0].length;
-  const heights = new Array(cols).fill(0);
-  let maxArea = 0;
-  for (let i = 0; i < rows; i++) {
-    for (let j = 0; j < cols; j++) {
-      heights[j] = matrix[i][j] === "1" ? heights[j] + 1 : 0;
-    }
-    maxArea = Math.max(maxArea, largestRectangleArea(heights));
+function minPathSum(grid) {
+  const m = grid.length;
+  const n = grid[0].length;
+  const dp = new Array(m).fill(0).map(() => new Array(n).fill(0));
+  dp[0][0] = grid[0][0];
+  for (let i = 1; i < m; i++) {
+    dp[i][0] = dp[i - 1][0] + grid[i][0];
   }
-  return maxArea;
-  function largestRectangleArea(heights) {
-    const stack = [];
-    let maxArea = 0;
-    for (let i = 0; i <= heights.length; i++) {
-      while (
-        stack.length &&
-        (i === heights.length || heights[i] < heights[stack[stack.length - 1]])
-      ) {
-        const height = heights[stack.pop()];
-        const width = stack.length === 0 ? i : i - stack[stack.length - 1] - 1;
-        maxArea = Math.max(maxArea, height * width);
-      }
-      stack.push(i);
-    }
-    return maxArea;
+  for (let j = 1; j < n; j++) {
+    dp[0][j] = dp[0][j - 1] + grid[0][j];
   }
+  for (let i = 1; i < m; i++) {
+    for (let j = 1; j < n; j++) {
+      dp[i][j] = grid[i][j] + Math.min(dp[i - 1][j], dp[i][j - 1]);
+    }
+  }
+  return dp[m - 1][n - 1];
 }
